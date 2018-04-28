@@ -32,22 +32,19 @@
 #define MAP_LIB_H
 
 #include "darknet.h"
+#include <stdbool.h>
 
 struct map_t {
    struct map_t *nxt;
  int key;
  detection *value;
-} ;
+};
 
 
 struct map_t *map_create();
-
 detection *map_get(struct map_t *m, int key);
 
-int map_find(struct map_t *m, int key);
-
+bool map_exists_key(struct map_t *m, int key);
 bool map_set(struct map_t *m, int key, detection *value);
-
 void map_free(struct map_t *m);
 #endif
- 

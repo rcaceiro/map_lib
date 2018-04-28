@@ -1,4 +1,5 @@
 # map_lib
-An associative-array library written in C.
+An associative-array library written in C and adapted to NodeYoloJS project
 
-# Sorry, I need to fix the files here.  Original code will be restored, soon.
+Original implentation on:
+[https://github.com/jimlawless/map_lib.git](https://github.com/jimlawless/map_lib.git)

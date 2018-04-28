@@ -34,73 +34,44 @@
 struct map_t *map_create()
 {
  struct map_t *m;
- m=(struct map_t *)malloc(sizeof(struct map_t));
- m->name=NULL;
- m->value=NULL;
- m->nxt=NULL;
+ m=(struct map_t *)calloc(1, sizeof(struct map_t));
  return m;
 }
 
-
-void map_set(struct map_t *m, char *name, char *value)
+bool map_set(struct map_t *m, int key, detection *value)
 {
- struct map_t *map;
-
- if(m->name == NULL)
+ if(m->key == NULL)
  {
-  m->name=(char *)malloc(strlen(name)+1);
-  strcpy(m->name, name);
-  m->value=(char *)malloc(strlen(value)+1);
-  strcpy(m->value, value);
+  m->key=key;
+  m->value=value;
   m->nxt=NULL;
-  return;
+  return true;
  }
- for(map=m;; map=map->nxt)
+
+ for(struct map_t *map=m;; map=map->nxt)
  {
-  if(!strcasecmp(name, map->name))
+  if(key == map->key)
   {
-   if(map->value != NULL)
-   {
-    free(map->value);
-    map->value=(char *)malloc(strlen(value)+1);
-    strcpy(map->value, value);
-    return;
-   }
+   map->value=value;
+   return true;
   }
   if(map->nxt == NULL)
   {
-   map->nxt=(struct map_t *)malloc(sizeof(struct map_t));
+   map->nxt=(struct map_t *)calloc(1, sizeof(struct map_t));
    map=map->nxt;
-   map->name=(char *)malloc(strlen(name)+1);
-   strcpy(map->name, name);
-   map->value=(char *)malloc(strlen(value)+1);
-   strcpy(map->value, value);
+   map->key=key;
+   map->value=value;
    map->nxt=NULL;
-   return;
+   return true;
   }
  }
 }
 
-char *map_get(struct map_t *m, char *name)
+detection *map_get(struct map_t *m, int key)
 {
- struct map_t *map;
- for(map=m; map != NULL; map=map->nxt)
+ for(struct map_t *map=m; map != NULL; map=map->nxt)
  {
-  if(!strcasecmp(name, map->name))
-  {
-   return map->value;
-  }
- }
- return "";
-}
-
-
-void *map_get_ptr(struct map_t *m, char *name)
-{
- struct map_t *map;
- for(map=m; map != NULL; map=map->nxt)
- {
-  if(!strcasecmp(name, map->name))
+  if(key == map->key)
   {
    return map->value;
   }
@@ -108,51 +79,18 @@ void *map_get_ptr(struct map_t *m, char *name)
  return NULL;
 }
 
-void map_set_ptr(struct map_t *m, char *name, void *value)
+void map_free(struct map_t *m)
 {
- struct map_t *map;
-
- if(m->name == NULL)
+ struct map_t *map, nxt=m;
+ while(map != NULL)
  {
-  m->name=(char *)malloc(strlen(name)+1);
-  strcpy(m->name, name);
-  m->value=value;
-  m->nxt=NULL;
-  return;
- }
- for(map=m;; map=map->nxt)
- {
-  if(!strcasecmp(name, map->name))
-  {
-   map->value=value;
-   return;
-  }
-  if(map->nxt == NULL)
-  {
-   map->nxt=(struct map_t *)malloc(sizeof(struct map_t));
-   map=map->nxt;
-   map->name=(char *)malloc(strlen(name)+1);
-   strcpy(map->name, name);
-   map->value=value;
-   map->nxt=NULL;
-   return;
-  }
+  nxt=map->nxt;
+  free(map);
+  map=nxt;
  }
 }
 
-void map_free_strings(struct map_t *m)
+bool map_exists_key(struct map_t *m, int key)
 {
- struct map_t *map=m;
- for(map=m; map != NULL; map=map->nxt)
- {
-  if(map->name != NULL)
-  {
-   free(map->name);
-  }
-  if(map->value != NULL)
-  {
-   free(map->value);
-  }
- }
+ return map_get(m, key) == NULL;
 }
-
