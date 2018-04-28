@@ -113,3 +113,20 @@ void map_print(FILE *file, struct map_t *m)
   map=map->nxt;
  }
 }
+
+bool map_empty(struct map_t *m)
+{
+ return m == NULL || (m->key == -1 && m->value == NULL);
+}
+
+int map_size(struct map_t *m)
+{
+ int size=0;
+ struct map_t *map=m;
+ while(map != NULL && map->key>-1)
+ {
+  size++;
+  map=map->nxt;
+ }
+ return size;
+}

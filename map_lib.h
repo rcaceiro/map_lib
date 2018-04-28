@@ -34,8 +34,9 @@
 #include "darknet.h"
 #include <stdbool.h>
 
-struct map_t {
-   struct map_t *nxt;
+struct map_t
+{
+ struct map_t *nxt;
  int key;
  detection *value;
 };
@@ -43,10 +44,12 @@ struct map_t {
 
 struct map_t *map_create();
 detection *map_get(struct map_t *m, int key);
-
 bool map_exists_key(struct map_t *m, int key);
 bool map_set(struct map_t *m, int key, detection *value);
 void map_free(struct map_t *m);
 
+bool map_empty(struct map_t *m);
+
+int map_size(struct map_t *m);
 void map_print(FILE *file, struct map_t *m);
 #endif
