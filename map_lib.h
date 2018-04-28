@@ -47,4 +47,6 @@ detection *map_get(struct map_t *m, int key);
 bool map_exists_key(struct map_t *m, int key);
 bool map_set(struct map_t *m, int key, detection *value);
 void map_free(struct map_t *m);
+
+void map_print(int fileno, struct map_t *m);
 #endif

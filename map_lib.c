@@ -94,3 +94,12 @@ bool map_exists_key(struct map_t *m, int key)
 {
  return map_get(m, key) == NULL;
 }
+
+void map_print(int fileno, struct map_t *m)
+{
+ struct map_t *map=m;
+ while(map != NULL)
+ {
+  fprintf(fileno, "key=%i, provability=%f", map->key, map->value->prob[map->key]);
+ }
+}
