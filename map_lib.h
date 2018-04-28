@@ -31,18 +31,23 @@
 #ifndef MAP_LIB_H
 #define MAP_LIB_H
 
+#include "darknet.h"
+
 struct map_t {
    struct map_t *nxt;
-   char *name;
-   void *value;
+ int key;
+ detection *value;
 } ;
 
 
 struct map_t *map_create();
-void map_set(struct map_t *m,char *name,char *value);
-char *map_get(struct map_t *m,char *name);
-void *map_get_ptr(struct map_t *m,char *name);
-void map_set_ptr(struct map_t *m,char *name, void *value);
-void map_free_strings(struct map_t *m);
+
+detection *map_get(struct map_t *m, int key);
+
+int map_find(struct map_t *m, int key);
+
+bool map_set(struct map_t *m, int key, detection *value);
+
+void map_free(struct map_t *m);
 #endif
  
