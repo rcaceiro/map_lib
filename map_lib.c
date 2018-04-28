@@ -35,12 +35,13 @@ struct map_t *map_create()
 {
  struct map_t *m;
  m=(struct map_t *)calloc(1, sizeof(struct map_t));
+ m->key=-1;
  return m;
 }
 
 bool map_set(struct map_t *m, int key, detection *value)
 {
- if(m->key == NULL)
+ if(m->key == -1)
  {
   m->key=key;
   m->value=value;
@@ -81,7 +82,8 @@ detection *map_get(struct map_t *m, int key)
 
 void map_free(struct map_t *m)
 {
- struct map_t *map, nxt=m;
+ struct map_t *map, *nxt;
+ map=nxt=m;
  while(map != NULL)
  {
   nxt=map->nxt;
@@ -95,11 +97,11 @@ bool map_exists_key(struct map_t *m, int key)
  return map_get(m, key) == NULL;
 }
 
-void map_print(int fileno, struct map_t *m)
+void map_print(FILE *file, struct map_t *m)
 {
  struct map_t *map=m;
  while(map != NULL)
  {
-  fprintf(fileno, "key=%i, provability=%f", map->key, map->value->prob[map->key]);
+  fprintf(file, "key=%i, provability=%f", map->key, map->value->prob[map->key]);
  }
 }
