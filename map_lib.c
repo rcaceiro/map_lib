@@ -53,10 +53,17 @@ bool map_set(struct map_t *m, int key, detection *value)
  {
   if(key == map->key)
   {
-   map->value=value;
-   return true;
+   if(value->prob[key]>map->value->prob[map->key])
+   {
+    map->value=value;
+    return true;
+   }
+   else
+   {
+    return false;
+   }
   }
-  if(map->nxt == NULL)
+  else if(map->nxt == NULL)
   {
    map->nxt=(struct map_t *)calloc(1, sizeof(struct map_t));
    map=map->nxt;
@@ -100,8 +107,9 @@ bool map_exists_key(struct map_t *m, int key)
 void map_print(FILE *file, struct map_t *m)
 {
  struct map_t *map=m;
- while(map != NULL)
+ while(map != NULL && map->key>-1)
  {
-  fprintf(file, "key=%i, provability=%f", map->key, map->value->prob[map->key]);
+  fprintf(file, "key=%i, provability=%f\n", map->key, map->value->prob[map->key]);
+  map=map->nxt;
  }
 }
